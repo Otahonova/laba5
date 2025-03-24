@@ -1,0 +1,23 @@
+class Base {
+public:
+    virtual ~Base() { // Виртуальный деструктор
+        std::cout << "Base destructor called" << std::endl;
+    }
+};
+
+class Derived : public Base {
+public:
+    ~Derived() {
+        std::cout << "Derived destructor called" << std::endl;
+    }
+};
+
+void deleteObject(Base* obj) {
+    delete obj; // Правильное освобождение памяти
+}
+
+int main() {
+    Base* obj = new Derived();
+    deleteObject(obj); // Вывод: "Derived destructor called" затем "Base destructor called"
+    return 0;
+}
