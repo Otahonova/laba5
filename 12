@@ -1,0 +1,84 @@
+#include <iostream>
+
+class Base {
+public:
+    int value;
+
+    Base(int v) : value(v) {}
+
+    void display() const {
+        std::cout << "Value: " << value << std::endl;
+    }
+};
+
+// Функция 1: Возвращает объект по значению
+Base func1() {
+    Base obj(10);
+    return obj; // Возврат по значению
+}
+
+// Функция 2: Возвращает указатель на объект
+Base* func2() {
+    Base* obj = new Base(20);
+    return obj; // Возврат указателя
+}
+
+// Функция 3: Возвращает ссылку на объект (не рекомендуется возвращать локальные переменные)
+Base& func3() {
+    static Base obj(30); // Используем статический объект
+    return obj; // Возврат ссылки на статический объект
+}
+
+// Функция 4: Возвращает объект по значению
+Base func4() {
+    Base obj(40);
+    return obj; // Возврат по значению
+}
+
+// Функция 5: Возвращает указатель на объект
+Base* func5() {
+    Base* obj = new Base(50);
+    return obj; // Возврат указателя
+}
+
+// Функция 6: Возвращает ссылку на объект (не рекомендуется возвращать локальные переменные)
+Base& func6() {
+    static Base obj(60); // Используем статический объект
+    return obj; // Возврат ссылки на статический объект
+}
+
+int main() {
+    // Проверка функции func1
+    Base b1 = func1();
+    std::cout << "Result from func1: ";
+    b1.display(); // Значение должно быть 10
+
+    // Проверка функции func2
+    Base* b2 = func2();
+    std::cout << "Result from func2: ";
+    b2->display(); // Значение должно быть 20
+    delete b2; // Не забываем освободить память
+
+    // Проверка функции func3
+    Base& b3 = func3();
+    std::cout << "Result from func3: ";
+    b3.display(); // Значение должно быть 30
+
+    // Проверка функции func4
+    Base b4 = func4();
+    std::cout << "Result from func4: ";
+    b4.display(); // Значение должно быть 40
+
+    // Проверка функции func5
+    Base* b5 = func5();
+    std::cout << "Result from func5: ";
+    b5->display(); // Значение должно быть 50
+    delete b5; // Не забываем освободить память
+
+    // Проверка функции func6
+    Base& b6 = func6();
+    std::cout << "Result from func6: ";
+    b6.display(); // Значение должно быть 60
+
+    return 0;
+}
