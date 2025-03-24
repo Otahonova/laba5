@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+
+class Box {
+public:
+    int size;
+
+    Box(int s) : size(s) {}
+};
+
+Box createBox(int size) {
+    return Box(size); // Возвращаем объект по значению
+}
+
+void printBox(Box box) { // Передача по значению
+    std::cout << "Box size: " << box.size << std::endl;
+}
+
+int main() {
+    Box myBox = createBox(10);
+    printBox(myBox);
+    
+    return 0;
+}
