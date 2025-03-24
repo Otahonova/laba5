@@ -1,0 +1,28 @@
+include <iostream>
+#include <memory>
+using namespace std;
+
+class Resource {
+public:
+    Resource() { std::cout << "Resource acquired." << std::endl; }
+    ~Resource() { std::cout << "Resource released." << std::endl; }
+};
+
+void useUniquePtr() {
+    std::unique_ptr<Resource> res(new Resource());
+}
+
+void useSharedPtr() {
+    std::shared_ptr<Resource> res1(new Resource());
+    {
+        std::shared_ptr<Resource> res2 = res1; // Увеличиваем счетчик ссылок
+        std::cout << "Shared resource in use." << std::endl;
+    } // res2 выходит из области видимости, счетчик ссылок уменьшается
+}
+
+int main() {
+    useUniquePtr(); // Ресурс будет освобожден при выходе из функции
+    useSharedPtr(); // Ресурс будет освобожден, когда последний shared_ptr выйдет из области видимости
+
+    return 0;
+}
