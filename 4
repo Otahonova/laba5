@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Базовый класс
+class Base {
+public:
+    virtual ~Base() = default; // Виртуальный деструктор
+
+    // Виртуальный метод для проверки принадлежности классу
+    virtual bool isA(const std::string& className) const {
+        return className == "Base";
+    }
+};
+
+// Производный класс
+class Desc : public Base {
+public:
+    bool isA(const std::string& className) const override {
+        return className == "Desc" || Base::isA(className);
+    }
+};
+
+// Функция для проверки класса
+void checkClass(Base* obj) {
+    if (obj->isA("Desc")) {
+        std::cout << "Object is of type Desc." << std::endl;
+    } else if (obj->isA("Base")) {
+        std::cout << "Object is of type Base." << std::endl;
+    } else {
+        std::cout << "Unknown object type." << std::endl;
+    }
+}
+
+int main() {
+    Base baseObj;
+    Desc descObj;
+
+    // Проверка принадлежности классу
+    checkClass(&baseObj); // Ожидается: Object is of type Base.
+    checkClass(&descObj); // Ожидается: Object is of type Desc.
+
+    return 0;
+}
