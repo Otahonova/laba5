@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+class Base {
+public:
+  virtual void print() { std::cout << "Base print()\n"; }
+  virtual ~Base() { std::cout << "Base destructor()\n"; }
+};
+
+class Derived : public Base {
+public:
+  void print() override { std::cout << "Derived print()\n"; }
+  ~Derived() override { std::cout << "Derived destructor()\n"; }
+};
+
+int main() {
+  Base* basePtr = new Derived(); // Полиморфный указатель на объект Derived
+  basePtr->print();               // Вывод: Derived print() - вызывается переопределенный метод
+  delete basePtr;                // Вывод: Derived destructor() - вызывается переопределенный деструктор
+  return 0;
+}
+
