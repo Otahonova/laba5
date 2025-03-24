@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+
+class Base {
+public:
+    virtual ~Base() {}
+    
+    // Метод isA для проверки типа
+    virtual bool isA(const std::string& type) const {
+        return type == "Base";
+    }
+};
+
+class Derived : public Base {
+public:
+    bool isA(const std::string& type) const override {
+        return type == "Derived" || Base::isA(type); // Проверка на производный класс
+    }
+
+    void specificMethod() {
+        std::cout << "Specific method in Derived" << std::endl;
+    }
+};
+
+void unsafeCast(Base* base) {
+    // Опасное приведение типов
+    Derived* derived = static_cast<Derived*>(base); // Без проверки
+    derived->specificMethod(); // Если base не является Derived, это приведет к неопределенному поведению
+}
+
+void safeCast(Base* base) {
+    // Безопасное приведение типов с использованием dynamic_cast
+    if (Derived* derived = dynamic_cast<Derived*>(base)) {
+        derived->specificMethod();
+    } else {
+        std::cout << "Base is not of type Derived." << std::endl;
+    }
+}
+
+int main() {
+    Base* base = new Base();
+    Derived* derived = new Derived();
+
+    // Опасное приведение типов
+    try {
+        unsafeCast(base); // Это вызовет неопределенное поведение
+    } catch (...) {
+        std::cout << "Caught an exception during unsafe cast." << std::endl;
+    }
+
+    // Безопасное приведение типов
+    safeCast(base); // Вывод: Base is not of type Derived.
+    safeCast(derived); // Вывод: Specific method in Derived
+
+    delete base;
+    delete derived;
+
+    return 0;
+}
+
