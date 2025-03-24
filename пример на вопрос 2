@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Shape {
+public:
+    virtual void draw() const { // Виртуальный метод
+        std::cout << "Drawing a shape" << std::endl;
+    }
+
+    virtual ~Shape() {} // Виртуальный деструктор
+};
+
+class Circle : public Shape {
+public:
+    void draw() const override { // Переопределенный метод
+        std::cout << "Drawing a circle" << std::endl;
+    }
+};
+
+class Square : public Shape {
+public:
+    void draw() const override { // Переопределенный метод
+        std::cout << "Drawing a square" << std::endl;
+    }
+};
+
+int main() {
+    std::vector<Shape*> shapes; // Коллекция указателей на базовый класс
+    shapes.push_back(new Circle());
+    shapes.push_back(new Square());
+
+    for (const auto& shape : shapes) {
+        shape->draw(); // Вызывает соответствующий метод производного класса
+    }
+
+    // Освобождение памяти
+    for (const auto& shape : shapes) {
+        delete shape;
+    }
+
+    return 0;
+}
