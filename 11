@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+class Base {
+public:
+    int value;
+
+    Base(int v) : value(v) {}
+
+    void display() const {
+        std::cout << "Размер: " << value << std::endl;
+    }
+};
+
+// Функция, принимающая объект по значению
+void func1(Base obj) {
+    std::cout << " func1 (с размером): ";
+    obj.display();
+    obj.value += 10; // Изменяем локальную копию
+}
+
+// Функция, принимающая указатель на объект
+void func2(Base *obj) {
+    if (obj) {
+        std::cout << " func2 (с указателем): ";
+        obj->display();
+        obj->value += 20; // Изменяем объект через указатель
+    }
+}
+
+// Функция, принимающая объект по ссылке
+void func3(Base &obj) {
+    std::cout << " func3 (ссылке): ";
+    obj.display();
+    obj.value += 30; // Изменяем оригинальный объект
+}
+
+int main() {
+    Base b(100);
+
+    // Вызов функции func1
+    func1(b);
+    std::cout << " func1: ";
+    b.display(); // Значение не изменится, так как передан по значению
+
+    // Вызов функции func2
+    func2(&b);
+    std::cout << " func2: ";
+    b.display(); // Значение изменится на 120
+
+    // Вызов функции func3
+    func3(b);
+    std::cout << "func3: ";
+    b.display(); // Значение изменится на 150
+
+    return 0;
+}
