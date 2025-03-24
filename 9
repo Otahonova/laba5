@@ -1,0 +1,73 @@
+#include <iostream>
+using namespace std;
+
+class Base {
+public:
+    // Конструктор по умолчанию
+    Base() {
+        std::cout << "Base: Конструктор по умолчанию вызван." << std::endl;
+    }
+
+    // Конструктор копирования с указателем
+    Base(Base *obj) {
+        std::cout << "Base: Конструктор копирования с указателем вызван." << std::endl;
+    }
+
+    // Конструктор копирования с ссылкой
+    Base(Base &obj) {
+        std::cout << "Base: Конструктор копирования с ссылкой вызван." << std::endl;
+    }
+
+    // Деструктор
+    ~Base() {
+        std::cout << "Base: Деструктор вызван." << std::endl;
+    }
+};
+
+class Desc : public Base {
+public:
+    // Конструктор по умолчанию
+    Desc() : Base() {
+        std::cout << "Desc: Конструктор по умолчанию вызван." << std::endl;
+    }
+
+    // Конструктор копирования с указателем
+    Desc(Desc *obj) : Base(obj) {
+        std::cout << "Desc: Конструктор копирования с указателем вызван." << std::endl;
+    }
+
+    // Конструктор копирования с ссылкой
+    Desc(Desc &obj) : Base(obj) {
+        std::cout << "Desc: Конструктор копирования с ссылкой вызван." << std::endl;
+    }
+
+    // Деструктор
+    ~Desc() {
+        std::cout << "Desc: Деструктор вызван." << std::endl;
+    }
+};
+
+int main() {
+    std::cout << "Создание объекта Base:" << std::endl;
+    Base baseObj;
+
+    std::cout << "\nСоздание объекта Desc:" << std::endl;
+    Desc descObj;
+
+    std::cout << "\nСоздание объекта Base через указатель:" << std::endl;
+    Base *basePtr = new Base(&baseObj);
+    delete basePtr;
+
+    std::cout << "\nСоздание объекта Desc через указатель:" << std::endl;
+    Desc *descPtr = new Desc(&descObj);
+    delete descPtr;
+
+    std::cout << "\nСоздание объекта Base через ссылку:" << std::endl;
+    Base baseObj2(baseObj);
+
+    std::cout << "\nСоздание объекта Desc через ссылку:" << std::endl;
+    Desc descObj2(descObj);
+
+    return 0;
+}
+
