@@ -1,0 +1,39 @@
+#include <iostream>
+#include <typeinfo>
+using namespace std;
+
+class Base {
+public:
+    virtual ~Base() = default; // Виртуальный деструктор
+};
+
+class Derived : public Base {
+public:
+    void display() {
+        std::cout << "Derived class method called." << std::endl;
+    }
+};
+
+void safeManualCast(Base* basePtr) {
+    // Проверяем тип объекта вручную
+    if (typeid(*basePtr) == typeid(Derived)) {
+        Derived* derivedPtr = static_cast<Derived*>(basePtr);
+        derivedPtr->display();
+    } else {
+        std::cout << "Failed to cast Base* to Derived*." << std::endl;
+    }
+}
+
+int main() {
+    Base baseObj;
+    Derived derivedObj;
+
+    // Пробуем привести базовый объект
+    safeManualCast(&baseObj); // Ожидается: Failed to cast Base* to Derived*.
+    
+    // Пробуем привести производный объект
+    safeManualCast(&derivedObj); // Ожидается: Derived class method called.
+
+    return 0;
+}
+
