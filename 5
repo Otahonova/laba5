@@ -1,0 +1,37 @@
+#include <iostream>
+
+class Base {
+public:
+    virtual ~Base() = default; // Виртуальный деструктор
+};
+
+class Derived : public Base {
+public:
+    void display() {
+        std::cout << "Derived class method called." << std::endl;
+    }
+};
+
+void safeDynamicCast(Base* basePtr) {
+    // Пробуем выполнить dynamic_cast
+    Derived* derivedPtr = dynamic_cast<Derived*>(basePtr);
+    if (derivedPtr) {
+        // Приведение прошло успешно
+        derivedPtr->display();
+    } else {
+        std::cout << "Failed to cast Base* to Derived*." << std::endl;
+    }
+}
+
+int main() {
+    Base baseObj;
+    Derived derivedObj;
+
+    // Пробуем привести базовый объект
+    safeDynamicCast(&baseObj); // Ожидается: Failed to cast Base* to Derived*.
+    
+    // Пробуем привести производный объект
+    safeDynamicCast(&derivedObj); // Ожидается: Derived class method called.
+
+    return 0;
+}
