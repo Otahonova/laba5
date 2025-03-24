@@ -1,0 +1,55 @@
+#include <iostream>
+#include <string>
+#include <typeinfo> // для typeid
+using namespace std;
+
+class Base {
+public:
+    virtual std::string classname() { return "Base"; }
+    virtual bool isA(std::string classname) { return classname == "Base"; }
+    virtual ~Base() {} //  виртуальный деструктор в базовом классе
+};
+
+class Derived1 : public Base {
+public:
+    std::string classname() override { return "Derived1"; }
+    bool isA(std::string classname) override { return classname == "Derived1" || Base::isA(classname); }
+};
+
+class Derived2 : public Base {
+public:
+    std::string classname() override { return "Derived2"; }
+    bool isA(std::string classname) override { return classname == "Derived2" || Base::isA(classname); }
+};
+
+
+int main() {
+    Base* base = new Base();
+    Derived1* derived1 = new Derived1();
+    Derived2* derived2 = new Derived2();
+    Base* base_as_derived1 = new Derived1();
+
+
+    std::cout << "base->classname(): " << base->classname() << std::endl; // Выведет "Base"
+    std::cout << "derived1->classname(): " << derived1->classname() << std::endl; // Выведет "Derived1"
+    std::cout << "derived2->classname(): " << derived2->classname() << std::endl; // Выведет "Derived2"
+    std::cout << "base_as_derived1->classname(): " << base_as_derived1->classname() << std::endl; // Выведет "Derived1" (благодаря виртуальной функции)
+
+
+    std::cout << "base->isA(\"Base\"): " << base->isA("Base") << std::endl; // Выведет true
+    std::cout << "derived1->isA(\"Base\"): " << derived1->isA("Base") << std::endl; // Выведет true (проверяет и базовый класс)
+    std::cout << "derived1->isA(\"Derived1\"): " << derived1->isA("Derived1") << std::endl; // Выведет true
+    std::cout << "derived2->isA(\"Derived1\"): " << derived2->isA("Derived1") << std::endl; // Выведет false
+
+
+    // Проблемы с classname():
+    // 1. Возвращает только имя непосредственного класса, не учитывая иерархию.
+    // 2. Нужно вручную обновлять во всех потомках.
+
+    delete base;
+    delete derived1;
+    delete derived2;
+    delete base_as_derived1;
+
+    return 0;
+}
