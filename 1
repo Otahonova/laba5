@@ -1,0 +1,39 @@
+#include <iostream>
+
+class Animal {
+public:
+  virtual void makeSound() {
+    std::cout << "Generic animal sound\n";
+  }
+};
+
+class Dog : public Animal {
+public:
+  void makeSound() override {
+    std::cout << "Woof!\n";
+  }
+};
+
+class Cat : public Animal {
+public:
+  void makeSound() override {
+    std::cout << "Meow!\n";
+  }
+};
+
+int main() {
+  Animal* animal1 = new Dog();
+  Animal* animal2 = new Cat();
+  Animal* animal3 = new Animal();
+
+
+  animal1->makeSound(); // Вывод: Woof! (Вызывается перекрытый метод из Dog)
+  animal2->makeSound(); // Вывод: Meow! (Вызывается перекрытый метод из Cat)
+  animal3->makeSound(); // Вывод: Generic animal sound (Вызывается метод базового класса)
+
+  delete animal1;
+  delete animal2;
+  delete animal3;
+
+  return 0;
+}
